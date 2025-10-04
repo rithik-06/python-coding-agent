@@ -239,7 +239,7 @@ class DebugAgent:
     def interactive_mode(self):
         """Start interactive debugging session"""
         console.print(Panel(
-            "[bold cyan]🤖 Python Debug Agent[/bold cyan]\n"
+            "[bold cyan]Python Debug Agent[/bold cyan]\n"
             "Commands:\n"
             "  fix <file>     - Fix errors in a file\n"
             "  analyze <file> - Analyze code quality\n"
@@ -252,13 +252,13 @@ class DebugAgent:
         
         while True:
             try:
-                user_input = input("\n💬 You: ").strip()
+                user_input = input("\nYou: ").strip()
                 
                 if not user_input:
                     continue
                 
                 if user_input.lower() in ['exit', 'quit', 'q']:
-                    console.print("[cyan]👋 Goodbye![/cyan]")
+                    console.print("[cyan]Goodbye![/cyan]")
                     break
                 
                 if user_input.lower() == 'help':
@@ -274,4 +274,34 @@ class DebugAgent:
                 
                 # Parse command
                 parts = user_input.split(maxsplit=1)
-                command = parts[
+                command = parts[0].lower()
+                args = parts[1] if len(parts) > 1 else ""
+                
+                if command == "fix":
+                    if args:
+                        self.fix_file(args)
+                    else:
+                        console.print("[yellow]Usage: fix <filepath>[/yellow]")
+                
+                elif command == "analyze":
+                    if args:
+                        code = self.file_handler.read_file(args)
+                        if code:
+                            self.analyze_code(code)
+                    else:
+                        console.print("[yellow]Usage: analyze <filepath>[/yellow]")
+                
+                elif command == "create":
+                    if args:
+                        self.create_code(args)
+                    else:
+                        console.print("[yellow]Usage: create <description>[/yellow]")
+                
+                else:
+                    console.print("[yellow]Unknown command. Type 'help' for commands.[/yellow]")
+            
+            except KeyboardInterrupt:
+                console.print("\n[cyan]Goodbye![/cyan]")
+                break
+            except Exception as e:
+                console.print(f"[red]Error: {e}[/red]")
