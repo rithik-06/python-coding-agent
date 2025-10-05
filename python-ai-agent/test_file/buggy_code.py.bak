@@ -5,18 +5,15 @@ def calculate_average(numbers):
     total = sum(numbers)
     return total / len(numbers)
 
-# Corrected: defined variable
-result = calculate_average([1, 2, 3])
+# Bug: undefined variable
+print(result)
 
 # Bug: division by zero
 def divide(a, b):
-    if b != 0:
-        return a / b
-    else:
-        return "Error: Division by zero"
+    return a / b
 
 print(divide(10, 0))
 
-# Corrected: defined list index
+# Bug: wrong list index
 my_list = [1, 2, 3]
-print(my_list[1])
+print(my_list[10])
